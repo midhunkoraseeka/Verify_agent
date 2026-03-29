@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+{
+    Schema::create('rl_loan_types_tbl', function (Blueprint $table) {
+        $table->id();
+        $table->string('loan_type_name'); // e.g., House Loan, AGPA Loan
+        $table->tinyInteger('status')->default(1); 
+        $table->tinyInteger('trash')->default(0);
+        $table->integer('created_by')->nullable();
+        $table->integer('updated_by')->nullable();
+        $table->timestamps();
+    });
+}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('rl_loan_types_tbl');
+    }
+};
