@@ -348,9 +348,9 @@
                 <form action="{{ route('admin.login') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="mobile_number">Email Address</label>
+                        <label for="mobile_number">Mobile Number</label>
                         <input type="text" id="mobile_number" name="mobile_number"
-                            placeholder="Enter your mobile_number" autocomplete="mobile_number">
+                            placeholder="Enter your mobile number" autocomplete="mobile_number">
                         @error('mobile_number')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
