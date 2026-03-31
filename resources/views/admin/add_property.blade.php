@@ -26,15 +26,6 @@
             <h1 class="page-title">Add Property Listing</h1>
         </div>
 
-        @if ($errors->any())
-            <div class="alert alert-danger mb-3">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         {{-- Added ID: propertyForm --}}
         <form id="propertyForm" class="property-form" action="{{ route('storeProperty') }}" method="POST" enctype="multipart/form-data">

@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Priority <span class="req">*</span></label>
+                    <label class="form-label">Priority </label>
 
                     <select name="priority" class="form-control @error('priority') is-invalid @enderror">
                         <option value="0" {{ old('priority', $agent->priority ?? '') === '0' ? 'selected' : '' }}>
@@ -118,9 +118,7 @@
                         value="{{ old('mobile_number', $agent->mobile_number ?? '') }}" maxlength="10"
                         oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 0 && !/^[6-9]/.test(this.value)) this.value = '';">
 
-                    @error('mobile_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    
                 </div>
 
                 <div class="col-12">
@@ -151,7 +149,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Password {{ isset($agent) ? '(Leave blank to keep)' : '*' }}</label>
+                    <label class="form-label">Password </label>
                     <input type="password" class="form-control" placeholder="Enter Password" name="password">
                 </div>
             </div>

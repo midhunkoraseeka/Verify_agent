@@ -100,7 +100,6 @@
                         <input type="text" class="form-control @error('full_name') is-invalid @enderror"
                             name="full_name" value="{{ old('full_name') }}" placeholder="Enter Full Name">
                         @error('full_name')
-                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -112,7 +111,6 @@
                         <input type="tel" class="form-control @error('mobile') is-invalid @enderror" name="mobile"
                             value="{{ old('mobile') }}" placeholder="Enter Mobile Number">
                         @error('mobile')
-                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>

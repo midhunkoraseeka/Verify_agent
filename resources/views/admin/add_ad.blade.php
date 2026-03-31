@@ -53,17 +53,7 @@
             </div>
         </div>
 
-        {{-- Show all validation errors --}}
-        @if ($errors->any())
-            <div class="alert alert-danger mb-3">
-                <strong>Please fix the following errors:</strong>
-                <ul class="mb-0 mt-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        
 
         <form class="property-form" action="{{ route('storeAd') }}" method="POST" enctype="multipart/form-data"
             autocomplete="off">
@@ -159,6 +149,7 @@
                             name="ad_image" accept="image/*" />
                         <small class="form-text text-muted mt-1">JPG, JPEG, PNG (max 2MB)</small>
                         @error('ad_image')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>

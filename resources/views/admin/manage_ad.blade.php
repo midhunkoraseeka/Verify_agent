@@ -136,12 +136,12 @@
                                     <a href="{{ route('editAd', $ad->id) }}" class="action-btn btn-edit"
                                         style="text-decoration: none; display: inline-block;">Edit</a>
 
-                                    <form action="{{ route('deleteAd', $ad->id) }}" method="POST"
-                                        style="display:inline;"
-                                        onsubmit="return confirm('Are you sure you want to delete this ad?')">
-                                        @csrf
-                                        <button type="submit" class="action-btn btn-delete">Delete</button>
-                                    </form>
+                                    <a href="{{ route('deleteAd', $ad->id) }}" 
+   class="action-btn btn-delete" 
+   onclick="return confirm('Are you sure you want to delete this ad?')"
+   style="text-decoration: none; display: inline-block;">
+   Delete
+</a>
                                 </td>
                             </tr>
                         @empty

@@ -167,8 +167,8 @@ class PropertyController extends Controller
             return redirect()->route('manageProperty')->with('success', 'Property listed successfully!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Database Error: ' . $e->getMessage()]);
-        }
+    dd($e->getMessage()); // This will stop the app and show the exact SQL error
+}
     }
 
     public function updateProperty(Request $request, $id)

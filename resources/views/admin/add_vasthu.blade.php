@@ -111,7 +111,6 @@
 
                         @error('mobile')
                             {{-- Added the validation icon to match your design standard --}}
-                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>

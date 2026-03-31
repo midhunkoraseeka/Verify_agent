@@ -67,7 +67,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/storeAd', [AdController::class, 'store'])->name('storeAd');
     Route::get('/editAd/{id}', [AdController::class, 'edit'])->name('editAd');
     Route::post('/updateAd/{id}', [AdController::class, 'update'])->name('updateAd');
-    Route::get('/deleteAd/{id}', [AdController::class, 'delete'])->name('deleteAd');
+    Route::match(['get', 'post'], '/deleteAd/{id}', [AdController::class, 'delete'])->name('deleteAd');
     Route::get('/restoreAd/{id}', [AdController::class, 'restore'])->name('restoreAd');
     Route::get('/exportAds', [AdController::class, 'exportAds'])->name('exportAds');
 

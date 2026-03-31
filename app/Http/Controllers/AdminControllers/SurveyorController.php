@@ -68,7 +68,11 @@ class SurveyorController extends Controller
         $request->validate([
             'full_name' => 'required|string|max:255',
             'mobile' => 'required|digits:10',
+            'constituency' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
             'survey_services' => 'required',
+            'office_location' => 'required|string|max:255',
             'aadhar' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -122,7 +126,11 @@ class SurveyorController extends Controller
         $request->validate([
             'full_name' => 'required|string|max:255',
             'mobile' => 'required|digits:10',
+            'constituency' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
             'survey_services' => 'required',
+            'office_location' => 'required|string|max:255',
             'aadhar' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'profile_photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);

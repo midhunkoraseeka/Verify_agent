@@ -144,6 +144,7 @@
                             <option value="1" {{ old('bank_type') == '1' ? 'selected' : '' }}>Government</option>
                         </select>
                         @error('bank_type')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -155,6 +156,7 @@
                         <input type="text" class="form-control @error('constituency') is-invalid @enderror"
                             name="constituency" value="{{ old('constituency') }}" placeholder="Enter Constituency">
                         @error('constituency')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -166,6 +168,7 @@
                         <input type="text" class="form-control @error('district') is-invalid @enderror"
                             name="district" value="{{ old('district') }}" placeholder="Enter District">
                         @error('district')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -177,6 +180,7 @@
                         <input type="text" class="form-control @error('state') is-invalid @enderror" name="state"
                             value="{{ old('state') }}" placeholder="Enter State">
                         @error('state')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -231,6 +235,7 @@
                             value="{{ old('loan_types', $agent->loan_types ?? '') }}">
 
                         @error('loan_types')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -241,6 +246,7 @@
                     <div class="input-group-container">
                         <textarea class="form-control @error('office_address') is-invalid @enderror" name="office_address" rows="3">{{ old('office_address') }}</textarea>
                         @error('office_address')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -252,6 +258,7 @@
                         <input type="file" class="form-control @error('aadhar') is-invalid @enderror"
                             name="aadhar">
                         @error('aadhar')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>
@@ -263,6 +270,7 @@
                         <input type="file" class="form-control @error('profile_photo') is-invalid @enderror"
                             name="profile_photo">
                         @error('profile_photo')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
                         @enderror
                     </div>

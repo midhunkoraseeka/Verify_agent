@@ -58,4 +58,9 @@ class Property extends Model
     {
         return $this->belongsTo(RoadSize::class, 'road_size');
     }
+
+    public function landType()
+    {
+        return $this->belongsTo(LandType::class, 'land_type');
+    }
 }
