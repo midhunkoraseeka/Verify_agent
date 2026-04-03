@@ -24,6 +24,9 @@ use App\Http\Controllers\AdminControllers\ProjectTypeController;
 use App\Http\Controllers\AdminControllers\VasthuServiceController;
 use App\Http\Controllers\AdminControllers\LoanTypeController;
 use App\Http\Controllers\AdminControllers\SurveyServiceController;
+use App\Http\Controllers\AdminControllers\StateController;
+use App\Http\Controllers\AdminControllers\DistrictController;
+use App\Http\Controllers\AdminControllers\ConstituencyController;
 
 
 Route::get('admin/login', [AuthController::class, 'showLogin'])->name('login');
@@ -184,6 +187,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/storeSurveyService', [SurveyServiceController::class, 'storeSurveyService'])->name('storeSurveyService');
     Route::post('/updateSurveyService/{id}', [SurveyServiceController::class, 'updateSurveyService'])->name('updateSurveyService');
     Route::get('/deleteSurveyService/{id}', [SurveyServiceController::class, 'deleteSurveyService'])->name('deleteSurveyService');
+
+    Route::get('/manageState', [StateController::class, 'manageState'])->name('manageState');
+    Route::post('/storeState', [StateController::class, 'storeState'])->name('storeState');
+    Route::post('/updateState/{id}', [StateController::class, 'updateState'])->name('updateState');
+    Route::get('/deleteState/{id}', [StateController::class, 'deleteState'])->name('deleteState');
+
+    Route::get('/manageDistrict', [DistrictController::class, 'manageDistrict'])->name('manageDistrict');
+    Route::post('/storeDistrict', [DistrictController::class, 'storeDistrict'])->name('storeDistrict');
+    Route::post('/updateDistrict/{id}', [DistrictController::class, 'updateDistrict'])->name('updateDistrict');
+    Route::get('/deleteDistrict/{id}', [DistrictController::class, 'deleteDistrict'])->name('deleteDistrict');
+    Route::get('/get-districts/{state_id}', [DistrictController::class, 'getDistricts']);   
+
+    Route::get('/manageConstituency', [ConstituencyController::class, 'manage'])->name('manageConstituency');
+Route::post('/storeConstituency', [ConstituencyController::class, 'store'])->name('storeConstituency');
+Route::post('/updateConstituency/{id}', [ConstituencyController::class, 'update'])->name('updateConstituency');
+Route::get('/deleteConstituency/{id}', [ConstituencyController::class, 'delete'])->name('deleteConstituency');
 });
 
 

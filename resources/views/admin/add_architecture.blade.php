@@ -153,10 +153,15 @@
                 {{-- State --}}
                 <div class="col-md-4">
                     <label class="form-label">State</label>
-                    <input type="text" class="form-control" name="state" value="{{ old('state') }}"
-                        placeholder="Karnataka" />
+                    <select class="form-select @error('state') is-invalid @enderror" name="state">
+    <option value="">Select State</option>
+    @foreach($states as $state)
+        <option value="{{ $state->state_name }}" {{ old('state') == $state->state_name ? 'selected' : '' }}>
+            {{ $state->state_name }}
+        </option>
+    @endforeach
+</select>
                 </div>
-
                 {{-- PIN Code --}}
                 <div class="col-md-4">
                     <label class="form-label">PIN Code</label>

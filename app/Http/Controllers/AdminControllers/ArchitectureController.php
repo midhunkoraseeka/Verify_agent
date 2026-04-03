@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminControllers;
 use App\Http\Controllers\Controller;
 use App\Models\Architecture;
 use App\Models\ProjectType;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -43,7 +44,8 @@ class ArchitectureController extends Controller
     {
         try {
             $project_types = ProjectType::where('trash', 0)->where('status', 1)->get();
-            return view('admin.add_architecture', compact('project_types'));
+            $states = State::where('trash', 0)->orderBy('state_name', 'asc')->get();
+            return view('admin.add_architecture', compact('project_types', 'states'));
         } catch (Exception $e) {
             return back()->withErrors(['error' => 'Could not load project types.']);
         }

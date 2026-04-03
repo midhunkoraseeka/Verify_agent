@@ -24,6 +24,7 @@ use App\Http\Controllers\AdminControllers\ProjectTypeController;
 use App\Http\Controllers\AdminControllers\VasthuServiceController;
 use App\Http\Controllers\AdminControllers\LoanTypeController;
 use App\Http\Controllers\AdminControllers\SurveyServiceController;
+use App\Http\Controllers\AdminControllers\DistrictController;
 
 
 Route::get('admin/login', [AuthController::class, 'showLogin'])->name('login');
@@ -184,6 +185,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/storeSurveyService', [SurveyServiceController::class, 'storeSurveyService'])->name('storeSurveyService');
     Route::post('/updateSurveyService/{id}', [SurveyServiceController::class, 'updateSurveyService'])->name('updateSurveyService');
     Route::get('/deleteSurveyService/{id}', [SurveyServiceController::class, 'deleteSurveyService'])->name('deleteSurveyService');
+
+    Route::get('/manageDistrict', [DistrictController::class, 'manageDistrict'])->name('manageDistrict');
+    Route::post('/storeDistrict', [DistrictController::class, 'storeDistrict'])->name('storeDistrict');
+    Route::post('/updateDistrict/{id}', [DistrictController::class, 'updateDistrict'])->name('updateDistrict');
+    Route::get('/deleteDistrict/{id}', [DistrictController::class, 'deleteDistrict'])->name('deleteDistrict');
+    Route::get('/get-districts/{state_id}', [DistrictController::class, 'getDistricts']);
+
 });
 
 

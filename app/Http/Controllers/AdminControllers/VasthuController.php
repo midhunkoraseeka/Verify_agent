@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AdminControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\VasthuConsultant;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -48,7 +49,8 @@ class VasthuController extends Controller
         try {
             // Fetch full objects instead of just strings
             $services = VasthuService::where('trash', 0)->where('status', 1)->get();
-            return view('admin.add_vasthu', compact('services'));
+            $states = State::where('trash', 0)->orderBy('state_name', 'asc')->get();
+            return view('admin.add_vasthu', compact('services', 'states'));
         } catch (\Throwable $th) {
             return back()->withErrors(['error' => 'Could not load form.']);
         }

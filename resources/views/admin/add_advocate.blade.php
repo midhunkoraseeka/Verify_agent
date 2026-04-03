@@ -50,7 +50,6 @@
     @include('admin.includes.sidebar')
     @include('admin.includes.header')
 
-
     <div class="content">
 
         <div class="page-head">
@@ -70,7 +69,7 @@
                 <div class="col-md-4">
                     <label class="form-label">Full Name <span class="req">*</span></label>
                     <input type="text" class="form-control @error('full_name') is-invalid @enderror" name="full_name"
-                        value="{{ old('full_name') }}">
+                        value="{{ old('full_name') }}" placeholder="Enter Full Name">
                     @error('full_name')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -78,31 +77,52 @@
 
                 <div class="col-md-4">
                     <label class="form-label">Mobile Number <span class="req">*</span></label>
-                    <div class="input-group-container">
-                        <input type="tel" class="form-control @error('mobile') is-invalid @enderror" name="mobile"
-                            value="{{ old('mobile') }}" placeholder="Enter 10-digit Mobile Number" maxlength="10"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 0 && !/^[6-9]/.test(this.value)) this.value = '';">
-
-                        @error('mobile')
-                            <i class="bi bi-exclamation-circle validation-icon"></i>
-                            <span class="invalid-msg">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    <input type="tel" class="form-control @error('mobile') is-invalid @enderror" name="mobile"
+                        value="{{ old('mobile') }}" placeholder="Enter 10-digit Mobile Number" maxlength="10"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 0 && !/^[6-9]/.test(this.value)) this.value = '';">
+                    @error('mobile')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Constituency</label>
-                    <input type="text" class="form-control" name="constituency" value="{{ old('constituency') }}">
+                    <select class="form-select @error('constituency') is-invalid @enderror" name="constituency">
+    <option value="">Select Constituency</option>
+    @foreach($constituencies as $con)
+        <option value="{{ $con->constituency_name }}" {{ old('constituency') == $con->constituency_name ? 'selected' : '' }}>
+            {{ $con->constituency_name }}
+        </option>
+    @endforeach
+</select>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">District</label>
-                    <input type="text" class="form-control" name="district" value="{{ old('district') }}">
-                </div>
-
+                {{-- State Dropdown --}}
                 <div class="col-md-4">
                     <label class="form-label">State</label>
-                    <input type="text" class="form-control" name="state" value="{{ old('state') }}">
+                    <select class="form-select @error('state') is-invalid @enderror" id="stateSelect">
+                        <option value="">Select State</option>
+                        @foreach($states as $state)
+                            <option value="{{ $state->id }}"
+                                data-name="{{ $state->state_name }}"
+                                {{ old('state') == $state->state_name ? 'selected' : '' }}>
+                                {{ $state->state_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    {{-- Hidden input stores state name for DB --}}
+                    <input type="hidden" name="state" id="stateNameInput" value="{{ old('state') }}">
+                    @error('state')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                {{-- District Dropdown (dynamic) --}}
+                <div class="col-md-4">
+                    <label class="form-label">District</label>
+                    <select class="form-select" name="district" id="districtSelect">
+                        <option value="">Select State First</option>
+                    </select>
                 </div>
 
                 <div class="col-md-4">
@@ -125,21 +145,17 @@
                                         Select All
                                     </label>
                                 </li>
-
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
 
-                                {{-- Dynamic Options from Master Data --}}
                                 @php
-                                    // Split previously selected service names for restoring state on validation errors
                                     $selectedServices = explode(', ', old('legal_services', ''));
                                 @endphp
 
                                 @foreach ($services as $service)
                                     <li>
                                         <label class="dropdown-item d-flex align-items-center gap-2">
-                                            {{-- FIX: Use service_name as value (not ID) so names are stored in DB --}}
                                             <input type="checkbox" class="option-checkbox"
                                                 value="{{ $service->service_name }}"
                                                 {{ in_array($service->service_name, $selectedServices) ? 'checked' : '' }}>
@@ -150,7 +166,6 @@
                             </ul>
                         </div>
 
-                        {{-- Hidden input that stores the comma-separated service names for the database --}}
                         <input type="hidden" name="legal_services" class="multiSelectValue"
                             value="{{ old('legal_services', '') }}">
                         @error('legal_services')
@@ -176,17 +191,20 @@
 
                 <div class="col-md-4">
                     <label class="form-label">Facebook (Optional)</label>
-                    <input type="url" class="form-control" name="facebook" value="{{ old('facebook') }}">
+                    <input type="url" class="form-control" name="facebook" value="{{ old('facebook') }}"
+                        placeholder="https://facebook.com/yourpage">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Instagram (Optional) </label>
-                    <input type="url" class="form-control" name="instagram" value="{{ old('instagram') }}">
+                    <label class="form-label">Instagram (Optional)</label>
+                    <input type="url" class="form-control" name="instagram" value="{{ old('instagram') }}"
+                        placeholder="https://instagram.com/yourpage">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">LinkedIn (Optional)</label>
-                    <input type="url" class="form-control" name="linkedin" value="{{ old('linkedin') }}">
+                    <input type="url" class="form-control" name="linkedin" value="{{ old('linkedin') }}"
+                        placeholder="https://linkedin.com/in/yourprofile">
                 </div>
 
             </div>
@@ -202,21 +220,20 @@
     @include('admin.includes.footer_links')
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
+            // ── Multi-select Legal Services ──────────────────────────────
             document.querySelectorAll('.multi-select-dropdown').forEach(wrapper => {
-
-                const btn = wrapper.querySelector('.multiSelectBtn');
-                const selectAll = wrapper.querySelector('.select-all');
-                const options = wrapper.querySelectorAll('.option-checkbox');
+                const btn         = wrapper.querySelector('.multiSelectBtn');
+                const selectAll   = wrapper.querySelector('.select-all');
+                const options     = wrapper.querySelectorAll('.option-checkbox');
                 const hiddenInput = wrapper.querySelector('.multiSelectValue');
 
                 function updateUI() {
                     const selected = [];
                     options.forEach(opt => opt.checked && selected.push(opt.value));
-
                     hiddenInput.value = selected.join(', ');
-                    btn.textContent = selected.length ? selected.join(', ') : 'Select Legal Services';
+                    btn.textContent   = selected.length ? selected.join(', ') : 'Select Legal Services';
                     selectAll.checked = selected.length === options.length && options.length > 0;
                 }
 
@@ -227,7 +244,7 @@
 
                 options.forEach(opt => opt.addEventListener('change', updateUI));
 
-                // Restore UI state on validation errors
+                // Restore on validation error
                 if (hiddenInput.value) {
                     const selectedVals = hiddenInput.value.split(', ');
                     options.forEach(opt => {
@@ -237,9 +254,63 @@
                 }
             });
 
+            // ── State → District Dynamic Loading ────────────────────────
+            const stateSelect    = document.getElementById('stateSelect');
+            const districtSelect = document.getElementById('districtSelect');
+            const stateNameInput = document.getElementById('stateNameInput');
+
+            stateSelect.addEventListener('change', function () {
+                const stateId      = this.value;
+                const selectedOpt  = this.options[this.selectedIndex];
+
+                // Save the state name (not ID) to the hidden input for DB storage
+                stateNameInput.value = stateId ? (selectedOpt.dataset.name ?? '') : '';
+
+                // Reset district
+                districtSelect.innerHTML = '<option value="">Loading...</option>';
+
+                if (stateId) {
+                    fetch(`/get-districts/${stateId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            districtSelect.innerHTML = '<option value="">Select District</option>';
+
+                            if (data.length === 0) {
+                                districtSelect.innerHTML = '<option value="">No districts found</option>';
+                                return;
+                            }
+
+                            data.forEach(district => {
+                                const option       = document.createElement('option');
+                                option.value       = district.district_name;
+                                option.textContent = district.district_name;
+                                districtSelect.appendChild(option);
+                            });
+
+                            // Restore old district value on validation error
+                            const oldDistrict = "{{ old('district') }}";
+                            if (oldDistrict) {
+                                districtSelect.value = oldDistrict;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching districts:', error);
+                            districtSelect.innerHTML = '<option value="">Error loading districts</option>';
+                        });
+                } else {
+                    districtSelect.innerHTML = '<option value="">Select State First</option>';
+                }
+            });
+
+            // ── On page load: restore state + districts if old() values exist ──
+            const oldStateId = "{{ old('state') ? $states->where('state_name', old('state'))->first()?->id : '' }}";
+            if (oldStateId) {
+                stateSelect.value = oldStateId;
+                stateSelect.dispatchEvent(new Event('change'));
+            }
+
         });
     </script>
 
 </body>
-
 </html>

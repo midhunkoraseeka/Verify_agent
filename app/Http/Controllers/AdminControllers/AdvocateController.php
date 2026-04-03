@@ -5,10 +5,12 @@ namespace App\Http\Controllers\AdminControllers;
 use App\Http\Controllers\Controller;
 use App\Models\Advocate;
 use App\Models\LegalService;
+use App\Models\Constituency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use App\Models\State;
 use Exception;
 class AdvocateController extends Controller
 {
@@ -44,7 +46,9 @@ class AdvocateController extends Controller
     {
         try {
             $services = LegalService::where('trash', 0)->get();
-            return view('admin.add_advocate', compact('services'));
+            $states = State::where('trash', 0)->orderBy('state_name', 'asc')->get();
+            $constituencies = Constituency::where('trash', 0)->orderBy('constituency_name', 'asc')->get();
+            return view('admin.add_advocate', compact('services', 'states'));
         } catch (Exception $e) {
             return back()->withErrors(['error' => 'Could not load form data.']);
         }

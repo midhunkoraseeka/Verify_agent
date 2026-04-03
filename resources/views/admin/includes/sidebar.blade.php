@@ -48,6 +48,16 @@
             <a href="{{ route('manageSurveyService') }}" class="nav-link" id="master-survey-link">
                 <span>Survey Services</span>
             </a>
+            <a href="{{ route('manageState') }}" class="nav-link" id="master-state-link">
+    <span>State</span>
+</a>
+            <a href="{{ route('manageDistrict') }}" class="nav-link" id="master-district-link">
+    <span>District</span>
+</a>
+
+            <a href="{{ route('manageConstituency') }}" class="nav-link" id="master-constituency-link">
+    <span>Constituency</span>
+</a>
         </div>
 
         <a href="#submenu9" class="nav-link dropdown-toggle" id="users-link">

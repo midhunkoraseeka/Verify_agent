@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminControllers;
 use App\Http\Controllers\Controller;
 use App\Models\LoanAgent;
 use App\Models\LoanType;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,8 @@ class LoanController extends Controller
     {
         try {
             $loan_master_types = LoanType::where('trash', 0)->where('status', 1)->get();
-            return view('admin.add_loan', compact('loan_master_types'));
+            $states = State::where('trash', 0)->orderBy('state_name', 'asc')->get();
+            return view('admin.add_loan', compact('loan_master_types', 'states'));
         } catch (\Throwable $th) {
             return back()->withErrors(['error' => 'Could not load the page.']);
         }

@@ -44,7 +44,6 @@
             cursor: pointer;
         }
 
-        /* Logic for the validation UI shown in the images */
         .input-group-container {
             position: relative;
         }
@@ -62,9 +61,7 @@
         .form-select.is-invalid {
             border-color: #dc3545 !important;
             padding-right: 40px;
-            /* Space for icon */
             background-image: none;
-            /* Remove default bootstrap icon */
         }
 
         .invalid-msg {
@@ -84,7 +81,6 @@
 
         <div class="page-head">
             <h1 class="page-title">Add Loan Agent</h1>
-
             <div class="action-group">
                 <button type="button" class="btn-action btn-back" onclick="history.back()">← Back</button>
                 <a href="{{ route('manageLoan') }}" class="btn-action btn-manage">Manage Loan Agents</a>
@@ -151,6 +147,40 @@
                 </div>
 
                 <div class="col-md-4">
+                    <label class="form-label">State <span class="req">*</span></label>
+                    <div class="input-group-container">
+                        <select class="form-select @error('state') is-invalid @enderror" id="stateSelect">
+                            <option value="">Select State</option>
+                            @foreach($states as $state)
+                                <option value="{{ $state->id }}" data-name="{{ $state->state_name }}" 
+                                    {{ old('state') == $state->state_name ? 'selected' : '' }}>
+                                    {{ $state->state_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        {{-- Hidden input keeps your current backend logic by sending State Name --}}
+                        <input type="hidden" name="state" id="stateNameInput" value="{{ old('state') }}">
+                        @error('state')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
+                            <span class="invalid-msg">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">District <span class="req">*</span></label>
+                    <div class="input-group-container">
+                        <select class="form-select @error('district') is-invalid @enderror" name="district" id="districtSelect">
+                            <option value="">Select State First</option>
+                        </select>
+                        @error('district')
+                            <i class="bi bi-exclamation-circle validation-icon"></i>
+                            <span class="invalid-msg">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-4">
                     <label class="form-label">Constituency <span class="req">*</span></label>
                     <div class="input-group-container">
                         <input type="text" class="form-control @error('constituency') is-invalid @enderror"
@@ -163,60 +193,26 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">District <span class="req">*</span></label>
-                    <div class="input-group-container">
-                        <input type="text" class="form-control @error('district') is-invalid @enderror"
-                            name="district" value="{{ old('district') }}" placeholder="Enter District">
-                        @error('district')
-                            <i class="bi bi-exclamation-circle validation-icon"></i>
-                            <span class="invalid-msg">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">State <span class="req">*</span></label>
-                    <div class="input-group-container">
-                        <input type="text" class="form-control @error('state') is-invalid @enderror" name="state"
-                            value="{{ old('state') }}" placeholder="Enter State">
-                        @error('state')
-                            <i class="bi bi-exclamation-circle validation-icon"></i>
-                            <span class="invalid-msg">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-md-4">
                     <div class="multi-select-dropdown">
                         <label class="form-label fw-semibold">
                             Type of Loans <span class="req">*</span>
                         </label>
-
                         <div class="dropdown">
-                            <button
-                                class="dropdown-toggle form-control text-start multiSelectBtn @error('loan_types') is-invalid @enderror"
+                            <button class="dropdown-toggle form-control text-start multiSelectBtn @error('loan_types') is-invalid @enderror"
                                 type="button" data-bs-toggle="dropdown">
-                                {{-- Display old input if validation failed, or the existing agent data, otherwise default text --}}
-                                {{ old('loan_types', $agent->loan_types ?? '') ?: 'Select Loan Types' }}
+                                {{ old('loan_types') ?: 'Select Loan Types' }}
                             </button>
 
                             <ul class="dropdown-menu w-100">
                                 <li>
                                     <label class="dropdown-item d-flex align-items-center gap-2 fw-semibold">
-                                        <input type="checkbox" class="select-all">
-                                        Select All
+                                        <input type="checkbox" class="select-all"> Select All
                                     </label>
                                 </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-
+                                <li><hr class="dropdown-divider"></li>
                                 @php
-                                    // Convert the comma-separated string into an array for comparison
-                                    $selectedLoans = explode(', ', old('loan_types', $agent->loan_types ?? ''));
+                                    $selectedLoans = explode(', ', old('loan_types', ''));
                                 @endphp
-
-                                {{-- Loop through the dynamic master data from your database --}}
                                 @foreach ($loan_master_types as $type)
                                     <li>
                                         <label class="dropdown-item d-flex align-items-center gap-2">
@@ -229,11 +225,7 @@
                                 @endforeach
                             </ul>
                         </div>
-
-                        {{-- Hidden input used by JS to store the comma-separated string for form submission --}}
-                        <input type="hidden" name="loan_types" class="multiSelectValue"
-                            value="{{ old('loan_types', $agent->loan_types ?? '') }}">
-
+                        <input type="hidden" name="loan_types" class="multiSelectValue" value="{{ old('loan_types', '') }}">
                         @error('loan_types')
                             <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
@@ -244,7 +236,7 @@
                 <div class="col-12">
                     <label class="form-label">Office Address / Location <span class="req">*</span></label>
                     <div class="input-group-container">
-                        <textarea class="form-control @error('office_address') is-invalid @enderror" name="office_address" rows="3">{{ old('office_address') }}</textarea>
+                        <textarea class="form-control @error('office_address') is-invalid @enderror" name="office_address" rows="3" placeholder="Enter Office Address / Location">{{ old('office_address') }}</textarea>
                         @error('office_address')
                             <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
@@ -255,8 +247,7 @@
                 <div class="col-md-4">
                     <label class="form-label">Upload Aadhaar <span class="req">*</span></label>
                     <div class="input-group-container">
-                        <input type="file" class="form-control @error('aadhar') is-invalid @enderror"
-                            name="aadhar">
+                        <input type="file" class="form-control @error('aadhar') is-invalid @enderror" name="aadhar">
                         @error('aadhar')
                             <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
@@ -267,8 +258,7 @@
                 <div class="col-md-4">
                     <label class="form-label">Profile Photo <span class="req">*</span></label>
                     <div class="input-group-container">
-                        <input type="file" class="form-control @error('profile_photo') is-invalid @enderror"
-                            name="profile_photo">
+                        <input type="file" class="form-control @error('profile_photo') is-invalid @enderror" name="profile_photo">
                         @error('profile_photo')
                             <i class="bi bi-exclamation-circle validation-icon"></i>
                             <span class="invalid-msg">{{ $message }}</span>
@@ -278,17 +268,17 @@
 
                 <div class="col-md-4">
                     <label class="form-label">Facebook (Optional)</label>
-                    <input type="url" class="form-control" name="facebook" value="{{ old('facebook') }}">
+                    <input type="url" class="form-control" name="facebook" value="{{ old('facebook') }}" placeholder="Enter Facebook URL">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Instagram (Optional)</label>
-                    <input type="url" class="form-control" name="instagram" value="{{ old('instagram') }}">
+                    <input type="url" class="form-control" name="instagram" value="{{ old('instagram') }}" placeholder="Enter Instagram URL">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">LinkedIn (Optional)</label>
-                    <input type="url" class="form-control" name="linkedin" value="{{ old('linkedin') }}">
+                    <input type="url" class="form-control" name="linkedin" value="{{ old('linkedin') }}" placeholder="Enter LinkedIn URL">
                 </div>
 
             </div>
@@ -305,6 +295,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // ── Multi-select Logic ───────────────────────────────────────────
             document.querySelectorAll('.multi-select-dropdown').forEach(wrapper => {
                 const btn = wrapper.querySelector('.multiSelectBtn');
                 const selectAll = wrapper.querySelector('.select-all');
@@ -323,18 +314,58 @@
                     options.forEach(opt => opt.checked = selectAll.checked);
                     updateUI();
                 });
-
                 options.forEach(opt => opt.addEventListener('change', updateUI));
 
-                // Initial UI check if old data exists
                 if (hiddenInput.value) {
                     const values = hiddenInput.value.split(', ');
-                    options.forEach(opt => {
-                        if (values.includes(opt.value)) opt.checked = true;
-                    });
+                    options.forEach(opt => { if (values.includes(opt.value)) opt.checked = true; });
                     updateUI();
                 }
             });
+
+            // ── State → District Dynamic Loading Logic ──────────────────────
+            const stateSelect = document.getElementById('stateSelect');
+            const districtSelect = document.getElementById('districtSelect');
+            const stateNameInput = document.getElementById('stateNameInput');
+
+            stateSelect.addEventListener('change', function() {
+                const stateId = this.value;
+                const selectedOption = this.options[this.selectedIndex];
+                
+                // Sync the hidden state name input for database storage
+                stateNameInput.value = stateId ? selectedOption.getAttribute('data-name') : '';
+
+                districtSelect.innerHTML = '<option value="">Loading...</option>';
+
+                if (stateId) {
+                    fetch(`/get-districts/${stateId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            districtSelect.innerHTML = '<option value="">Select District</option>';
+                            data.forEach(district => {
+                                const option = document.createElement('option');
+                                option.value = district.district_name; // Save name to DB
+                                option.textContent = district.district_name;
+                                districtSelect.appendChild(option);
+                            });
+
+                            // Restore old selection if validation failed
+                            const oldDistrict = "{{ old('district') }}";
+                            if (oldDistrict) districtSelect.value = oldDistrict;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching districts:', error);
+                            districtSelect.innerHTML = '<option value="">Error loading districts</option>';
+                        });
+                } else {
+                    districtSelect.innerHTML = '<option value="">Select State First</option>';
+                }
+            });
+
+            // Handle page load for validation error redirects
+            if (stateSelect.value) {
+                stateSelect.dispatchEvent(new Event('change'));
+            }
         });
     </script>
 </body>

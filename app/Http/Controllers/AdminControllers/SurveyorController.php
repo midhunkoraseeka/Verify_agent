@@ -5,6 +5,8 @@ namespace App\Http\Controllers\AdminControllers;
 use App\Http\Controllers\Controller;
 use App\Models\LandSurveyor;
 use App\Models\SurveyService;
+use App\Models\State;  
+use App\Models\Constituency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -46,7 +48,9 @@ class SurveyorController extends Controller
     {
         try {
             $services = SurveyService::where('trash', 0)->where('status', 1)->get();
-            return view('admin.add_surveyor', compact('services'));
+            $states = State::where('trash', 0)->orderBy('state_name', 'asc')->get();
+            $constituencies = Constituency::where('trash', 0)->orderBy('constituency_name', 'asc')->get();
+            return view('admin.add_surveyor', compact('services', 'states', 'constituencies'));
         } catch (\Throwable $th) {
             return back()->withErrors(['error' => 'Could not load create surveyor page.']);
         }
@@ -125,7 +129,7 @@ class SurveyorController extends Controller
     {
         $request->validate([
             'full_name' => 'required|string|max:255',
-            'mobile' => 'required|digits:10',
+            'mobile' => ['required', 'regex:/^[6-9]\d{9}$/'],
             'constituency' => 'required|string|max:255',
             'district' => 'required|string|max:255',
             'state' => 'required|string|max:255',
